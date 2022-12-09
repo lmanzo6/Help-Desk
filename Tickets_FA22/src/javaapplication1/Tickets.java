@@ -38,10 +38,14 @@ public class Tickets extends JFrame implements ActionListener {
 	
 	public Tickets(Boolean isAdmin) {
 
-        chkIfAdmin = isAdmin;
-        createMenu();
-        prepareGUI();
-
+		//distinguish admins/regular users
+        if (chkIfAdmin = isAdmin) {
+            createMenu();
+            prepareAdminGUI();
+        } else {
+            createMenu();
+            prepareRegularUserGUI();
+        }
     }
 		
 
@@ -96,8 +100,9 @@ public class Tickets extends JFrame implements ActionListener {
 		 */
 
 	}	
-
-	private void prepareGUI() {
+	
+	//GUI made for admins
+	private void prepareAdminGUI() {
 
         // create JMenu bar
         JMenuBar bar = new JMenuBar();
@@ -119,7 +124,29 @@ public class Tickets extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+	
+	//GUI made for regular users
+	private void prepareRegularUserGUI() {
+        // create JMenu bar
+        JMenuBar bar = new JMenuBar();
+        bar.add(mnuFile); // add main menu items in order, to JMenuBar
+        bar.add(mnuTickets);
+        // add menu bar components to frame
+        setJMenuBar(bar);
 
+        addWindowListener(new WindowAdapter() {
+            // define a window close operation
+            public void windowClosing(WindowEvent wE) {
+                System.exit(0);
+            }
+        });
+        // set frame options
+        setSize(400, 400);
+        getContentPane().setBackground(Color.LIGHT_GRAY);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// implement actions for sub menu items
@@ -182,7 +209,8 @@ public class Tickets extends JFrame implements ActionListener {
 				    id = Integer.parseInt(ticketId); 
 				    dao.updateRecords(ticketId,ticketDesc);
 				    System.out.print(id);
-				  
+				    //validation check
+				    //display updated ticket id
 				    if (id != 0) { 
 				    	System.out.println("Ticket ID : " + id + " updated successfully!!!"); JOptionPane.showMessageDialog(null,"Ticket id: " + id + " updated"); 	
 				    } 
@@ -210,7 +238,8 @@ public class Tickets extends JFrame implements ActionListener {
 					id = Integer.parseInt(ticketId); 
 					dao.deleteRecords(id); 
 					System.out.print(id);
-		  
+					//validation check
+					//display deleted ticket id
 					if (id != 0) { 
 						System.out.println("Ticket ID : " + id + " deleted successfully!!!"); JOptionPane.showMessageDialog(null, "Ticket id: " + id + " deleted"); 
 						} 
@@ -240,7 +269,8 @@ public class Tickets extends JFrame implements ActionListener {
 					id = Integer.parseInt(ticketId); 
 					dao.closeRecord(ticketId); 
 					System.out.print(id);
-		  
+					//validation check
+					//display ticket closed ticket id
 					if (id != 0) { 
 						System.out.println("Ticket ID : " + id + " closed successfully!!!"); JOptionPane.showMessageDialog(null, "Ticket id: " + id + " closed"); 
 					} 
@@ -252,10 +282,6 @@ public class Tickets extends JFrame implements ActionListener {
 			  }
 		  
 		  }
-		/*
-		 * continue implementing any other desired sub menu items (like for update and
-		 * delete sub menus for example) with similar syntax & logic as shown above
-		 */
 		
 	}
 
